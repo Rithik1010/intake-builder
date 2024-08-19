@@ -5,6 +5,13 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
 import { Textarea } from "./ui/textarea";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "./ui/select";
 
 interface DialogFormProps {
     onSubmit: (requestType: RequestType) => void;
@@ -47,12 +54,11 @@ export default function DialogForm({
     };
 
     useEffect(() => {
-        // Adjust the textarea height to match its content
         if (textareaRef.current) {
             textareaRef.current.style.height = "auto";
             textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
         }
-    }, [purpose]); // Dependency array to run this effect when `purpose` changes
+    }, [purpose]);
 
     const handleAddField = (event: React.MouseEvent) => {
         event.preventDefault();
@@ -70,7 +76,6 @@ export default function DialogForm({
         newFields[index] = { ...newFields[index], ...field };
         setFields(newFields);
 
-        // Clear the error for this field if it becomes valid
         if (field.name !== undefined) {
             const errorKey = `field-name-${index}`;
             if (field.name.trim()) {
@@ -109,7 +114,6 @@ export default function DialogForm({
         const newFields = fields.filter((_, i) => i !== index);
         setFields(newFields);
 
-        // Remove errors related to this field
         setErrors((prevErrors) => {
             const { [`field-name-${index}`]: removedName, ...remainingErrors } =
                 prevErrors;
@@ -233,21 +237,28 @@ export default function DialogForm({
                             >
                                 Field Type
                             </Label>
-                            <select
-                                id={`field-type-${index}`}
-                                value={field.field_type}
-                                onChange={(e) =>
+                            <Select
+                                onValueChange={(value) =>
                                     handleFieldChange(index, {
-                                        field_type: e.target.value,
+                                        field_type: value,
                                     })
                                 }
-                                className="w-full p-2 border rounded-md bg-white dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500"
+                                defaultValue={field.field_type}
                             >
-                                <option value="text">Text</option>
-                                <option value="long-text">Long Text</option>
-                                <option value="date">Date</option>
-                                <option value="select">Select</option>
-                            </select>
+                                <SelectTrigger className="dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">
+                                    <SelectValue placeholder="Select field type" />
+                                </SelectTrigger>
+                                <SelectContent className="dark:bg-gray-600 dark:text-gray-100">
+                                    <SelectItem value="text">Text</SelectItem>
+                                    <SelectItem value="long-text">
+                                        Long Text
+                                    </SelectItem>
+                                    <SelectItem value="date">Date</SelectItem>
+                                    <SelectItem value="select">
+                                        Select
+                                    </SelectItem>
+                                </SelectContent>
+                            </Select>
                         </div>
                         <div>
                             <Label
