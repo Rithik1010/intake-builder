@@ -11,7 +11,7 @@ export default function EmptyState({ onCreate }: EmptyStateProps) {
                 No Request Types Yet
             </h2>
             <p className="text-gray-600 dark:text-gray-400">
-                It looks like you haven't created any request types yet.
+                It looks like you have not created any request types yet.
             </p>
             <Button
                 variant="default"
