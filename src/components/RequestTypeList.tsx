@@ -18,29 +18,29 @@ export default function RequestTypeList({
             {requestTypes.map((requestType, index) => (
                 <div
                     key={index}
-                    className="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col"
+                    className="p-6 bg-white dark:bg-gray-700 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col"
                 >
-                    <h3 className="text-xl font-semibold mb-2">
+                    <h3 className="text-xl font-semibold mb-2 dark:text-gray-100">
                         {requestType.type_name}
                     </h3>
-                    <p className="text-gray-700 mb-4 flex-grow">
+                    <p className="text-gray-700 dark:text-gray-300 mb-4 flex-grow">
                         {requestType.purpose}
                     </p>
                     <div className="flex justify-end mt-auto space-x-2">
                         <Button
                             variant="outline"
                             onClick={() => onEdit(index)}
-                            className="flex justify-between items-center"
+                            className="flex justify-between items-center dark:border-gray-500 dark:text-gray-100"
                         >
-                            <Pencil className="w-4 h-4" />
+                            <Pencil className="w-4 h-4 dark:text-gray-100" />
                             <span className="ml-2">Edit</span>
                         </Button>
                         <Button
                             variant="destructive"
                             onClick={() => onDelete(index)}
-                            className="flex justify-between items-center"
+                            className="flex justify-between items-center dark:bg-red-600 dark:text-white"
                         >
-                            <Trash className="w-4 h-4" />
+                            <Trash className="w-4 h-4 dark:text-white" />
                             <span className="ml-2">Delete</span>
                         </Button>
                     </div>

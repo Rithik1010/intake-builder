@@ -52,28 +52,39 @@ export default function DialogForm({
 
     return (
         <form className="space-y-4 mt-4">
-            <Label htmlFor="typeName">Request Type</Label>
+            <Label htmlFor="typeName" className="dark:text-gray-100">
+                Request Type
+            </Label>
             <Input
                 id="typeName"
                 value={typeName}
                 onChange={(e) => setTypeName(e.target.value)}
                 placeholder="E.g., NDA Request - Sales"
+                className="dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500"
             />
 
-            <Label htmlFor="purpose">Purpose</Label>
+            <Label htmlFor="purpose" className="dark:text-gray-100">
+                Purpose
+            </Label>
             <Input
                 id="purpose"
                 value={purpose}
                 onChange={(e) => setPurpose(e.target.value)}
                 placeholder="Define when this form should be filled..."
+                className="dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500"
             />
 
             <div className="space-y-2">
-                <h3 className="font-semibold">Information to Collect</h3>
+                <h3 className="font-semibold dark:text-gray-100">
+                    Information to Collect
+                </h3>
                 {fields.map((field, index) => (
                     <div key={index} className="space-y-2">
                         <div>
-                            <Label htmlFor={`field-name-${index}`}>
+                            <Label
+                                htmlFor={`field-name-${index}`}
+                                className="dark:text-gray-100"
+                            >
                                 Field Name
                             </Label>
                             <Input
@@ -85,10 +96,14 @@ export default function DialogForm({
                                     })
                                 }
                                 placeholder="Field Name"
+                                className="dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500"
                             />
                         </div>
                         <div>
-                            <Label htmlFor={`field-type-${index}`}>
+                            <Label
+                                htmlFor={`field-type-${index}`}
+                                className="dark:text-gray-100"
+                            >
                                 Field Type
                             </Label>
                             <select
@@ -99,7 +114,7 @@ export default function DialogForm({
                                         field_type: e.target.value,
                                     })
                                 }
-                                className="w-full p-2 border rounded-md"
+                                className="w-full p-2 border rounded-md bg-white dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500"
                             >
                                 <option value="text">Text</option>
                                 <option value="long-text">Long Text</option>
@@ -108,7 +123,12 @@ export default function DialogForm({
                             </select>
                         </div>
                         <div>
-                            <Label htmlFor={`example-${index}`}>Example</Label>
+                            <Label
+                                htmlFor={`example-${index}`}
+                                className="dark:text-gray-100"
+                            >
+                                Example
+                            </Label>
                             <Input
                                 id={`example-${index}`}
                                 value={field.example}
@@ -118,6 +138,7 @@ export default function DialogForm({
                                     })
                                 }
                                 placeholder="Example"
+                                className="dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500"
                             />
                         </div>
                         <div className="flex items-center">
@@ -129,25 +150,40 @@ export default function DialogForm({
                                         required: e.target.checked,
                                     })
                                 }
-                                className="mr-2"
+                                className="mr-2 dark:bg-gray-600 dark:border-gray-500"
                             />
-                            <Label htmlFor={`required-${index}`}>
+                            <Label
+                                htmlFor={`required-${index}`}
+                                className="dark:text-gray-100"
+                            >
                                 Required
                             </Label>
                         </div>
                     </div>
                 ))}
-                <Button variant="secondary" onClick={handleAddField}>
+                <Button
+                    variant="secondary"
+                    onClick={handleAddField}
+                    className="dark:bg-gray-700 dark:text-gray-100"
+                >
                     Add Another Field
                 </Button>
             </div>
             <div className="mt-4">
-                <Button variant="default" onClick={handleSubmit}>
+                <Button
+                    variant="default"
+                    onClick={handleSubmit}
+                    className="dark:bg-gray-700 dark:text-gray-100"
+                >
                     {initialData
                         ? "Update Request Type"
                         : "Create Request Type"}
                 </Button>
-                <Button variant="outline" onClick={onClose} className="mt-4">
+                <Button
+                    variant="outline"
+                    onClick={onClose}
+                    className="mt-4 dark:border-gray-600 dark:text-gray-100"
+                >
                     Close
                 </Button>
             </div>

@@ -5,7 +5,6 @@ import {
     CardHeader,
     CardTitle,
     CardDescription,
-    CardContent,
     CardFooter,
 } from "./ui/card";
 
@@ -21,7 +20,7 @@ export default function RequestTypeItem({
     onDelete,
 }: RequestTypeItemProps) {
     return (
-        <Card className="shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between">
+        <Card className="shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
             <div>
                 <CardHeader>
                     <CardTitle className="text-xl font-semibold">
@@ -31,10 +30,18 @@ export default function RequestTypeItem({
                 </CardHeader>
             </div>
             <CardFooter className="mt-auto flex justify-end space-x-2">
-                <Button variant="outline" onClick={onEdit}>
+                <Button
+                    variant="outline"
+                    className="dark:border-gray-500 dark:text-gray-200"
+                    onClick={onEdit}
+                >
                     Edit
                 </Button>
-                <Button variant="destructive" onClick={onDelete}>
+                <Button
+                    variant="destructive"
+                    className="dark:bg-red-600 dark:text-white"
+                    onClick={onDelete}
+                >
                     Delete
                 </Button>
             </CardFooter>

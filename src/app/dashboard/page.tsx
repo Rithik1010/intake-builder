@@ -51,7 +51,8 @@ export default function Dashboard() {
                 toast({
                     title: "Success",
                     description: "Request type added successfully!",
-                    className: "bg-green-100 text-green-700",
+                    className:
+                        "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300",
                     duration: 1500,
                 });
             } else {
@@ -59,7 +60,8 @@ export default function Dashboard() {
                 toast({
                     title: "Success",
                     description: "Request type updated successfully!",
-                    className: "bg-green-100 text-green-700",
+                    className:
+                        "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300",
                     duration: 1500,
                 });
             }
@@ -91,14 +93,14 @@ export default function Dashboard() {
     return (
         <div>
             <Navbar />
-            <div className="container mx-auto mt-10 p-6 bg-gray-100 rounded-md">
+            <div className="container mx-auto mt-10 p-6 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-md">
                 {loadingData ? (
                     <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                         {/* Show skeletons while loading */}
                         {[...Array(6)].map((_, index) => (
                             <div
                                 key={index}
-                                className="p-6 bg-white rounded-lg shadow-md"
+                                className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md"
                             >
                                 <Skeleton height="24px" className="mb-2" />
                                 <Skeleton
@@ -122,7 +124,8 @@ export default function Dashboard() {
                                 title: "Success",
                                 description:
                                     "Request type deleted successfully!",
-                                className: "bg-green-100 text-green-700",
+                                className:
+                                    "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300",
                                 duration: 1500,
                             });
                         }}
@@ -138,7 +141,7 @@ export default function Dashboard() {
                             onClick={() => setIsDialogOpen(true)}
                         />
                     </DialogTrigger>
-                    <DialogContent>
+                    <DialogContent className="dark:bg-gray-800 dark:text-gray-100">
                         <DialogForm
                             initialData={
                                 selectedIndex !== null
