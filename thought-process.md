@@ -6,7 +6,7 @@
 
 **Justification**: Given that we only want users to manage request types that they own, it was essential to create a layer of authentication. This approach not only adds security but also ensures that users can only interact with their own data, thereby preventing unauthorized access and data breaches.
 
-**Tradeoff**: Introducing authentication requires additional backend handling and user management, but the tradeoff is justified for security and personalized user experience.
+**Tradeoff**: Introducing authentication requires additional backend handling, but the tradeoff is justified for security and personalized user experience.
 
 ## 2. Skeleton, Empty State, and Validations
 
