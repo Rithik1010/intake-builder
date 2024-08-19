@@ -1,6 +1,7 @@
 "use client";
 
-import Navbar from "@/components/Navbar"; // Import the Navbar component
+import Navbar from "@/components/Navbar";
+import FloatingActionButton from "@/components/FloatingActionButton";
 import DialogForm from "@/components/DialogForm";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import RequestTypeList from "@/components/RequestTypeList";
@@ -23,16 +24,14 @@ export default function Dashboard() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    // Check if the user is logged in
     useEffect(() => {
         const userEmail = localStorage.getItem("userEmail");
         if (!userEmail) {
-            router.push("/"); // Redirect to landing page if not logged in
+            router.push("/");
         }
     }, [router]);
 
     useEffect(() => {
-        console.log("Fetching request types");
         fetchRequestTypes();
     }, [fetchRequestTypes]);
 
@@ -42,10 +41,10 @@ export default function Dashboard() {
         try {
             if (selectedIndex === null) {
                 await addRequestType(requestType);
-                await fetchRequestTypes(); // Fetch after adding a new request type
+                await fetchRequestTypes();
             } else {
                 await updateRequestType(selectedIndex, requestType);
-                await fetchRequestTypes(); // Fetch after updating a request type
+                await fetchRequestTypes();
             }
         } finally {
             setLoading(false);
@@ -60,7 +59,6 @@ export default function Dashboard() {
     };
 
     const resetForm = () => {
-        console.log("Closing dialog, form reset");
         setSelectedIndex(null);
         setIsDialogOpen(false);
     };
@@ -77,15 +75,12 @@ export default function Dashboard() {
 
                 <Dialog
                     open={isDialogOpen}
-                    onOpenChange={(isOpen) => {
-                        console.log("Dialog open state changed:", isOpen);
-                        setIsDialogOpen(isOpen);
-                    }}
+                    onOpenChange={(isOpen) => setIsDialogOpen(isOpen)}
                 >
                     <DialogTrigger asChild>
-                        <Button variant="default" className="mt-6">
-                            Create New Request Type
-                        </Button>
+                        <FloatingActionButton
+                            onClick={() => setIsDialogOpen(true)}
+                        />
                     </DialogTrigger>
                     <DialogContent>
                         <DialogForm
