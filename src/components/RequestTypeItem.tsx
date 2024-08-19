@@ -39,8 +39,8 @@ export default function RequestTypeItem({
                 </Button>
                 <Button
                     variant="destructive"
-                    className="dark:bg-red-600 dark:text-white"
                     onClick={onDelete}
+                    className="dark:border-gray-500 dark:text-gray-200"
                 >
                     Delete
                 </Button>
