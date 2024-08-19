@@ -5,7 +5,7 @@ This project is a frontend web application built with Next.js and Tailwind CSS, 
 ## Important Notes
 
 -   **Login Credentials:** You can log in using the email ID `a@a.com`.
--   **Backend Response Time:** Please note that the backend API is deployed on a free-tier web service on Render, which has limited resources. The initial response might take some time, with a typical wait time being around 30 seconds.
+-   **Backend Response Time:** Please note that the backend API is deployed on a free-tier web service on Render, which has limited resources. The initial response might take some time, with a typical wait time being around 10-20 seconds.
 
 ## Requirements
 
