@@ -2,6 +2,11 @@
 
 This project is a frontend web application built with Next.js and Tailwind CSS, providing a user interface for managing request types. It interacts with a FastAPI backend to perform CRUD operations on request types.
 
+## Important Notes
+
+-   **Login Credentials:** You can log in using the email ID `a@a.com`.
+-   **Backend Response Time:** Please note that the backend API is deployed on a free-tier web service on Render, which has limited resources. The initial response might take some time, with a typical wait time being around 30 seconds.
+
 ## Requirements
 
 -   Node.js 18+
