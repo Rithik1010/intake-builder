@@ -8,13 +8,12 @@ export interface InformationField {
     example?: string;
 }
 
-interface RequestType {
-    request_type: string;
+export interface RequestType {
+    type_name: string;
     purpose: string;
     information_to_collect: InformationField[];
-    request_type_owner: string;
-    time_of_creation: string;
-    time_of_update?: string; // Optional field for update time
+    time_of_creation?: string;
+    time_of_update?: string;
 }
 
 interface RequestTypeState {
@@ -28,13 +27,23 @@ interface RequestTypeState {
     deleteRequestType: (index: number) => Promise<void>;
 }
 
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+console.log("Backend URL:", backendUrl);
+
 export const useRequestTypeStore = create<RequestTypeState>((set) => ({
     requestTypes: [],
 
     fetchRequestTypes: async () => {
         try {
+            const userEmail = localStorage.getItem("userEmail");
+            if (!userEmail)
+                throw new Error("User email not found in local storage");
+
             const response = await axios.get<RequestType[]>(
-                "http://localhost:8000/request-types/"
+                `${backendUrl}/request-types/`,
+                {
+                    headers: { "x-user-email": userEmail },
+                }
             );
             set({ requestTypes: response.data });
         } catch (error) {
@@ -44,13 +53,19 @@ export const useRequestTypeStore = create<RequestTypeState>((set) => ({
 
     addRequestType: async (requestType) => {
         try {
+            const userEmail = localStorage.getItem("userEmail");
+            if (!userEmail)
+                throw new Error("User email not found in local storage");
+
             const response = await axios.post(
-                "http://localhost:8000/request-types/",
-                requestType
+                `${backendUrl}/request-types/`,
+                requestType,
+                {
+                    headers: { "x-user-email": userEmail },
+                }
             );
-            const newRequestType = response.data;
             set((state) => ({
-                requestTypes: [...state.requestTypes, newRequestType],
+                requestTypes: [...state.requestTypes, response.data],
             }));
         } catch (error) {
             console.error("Error adding request type:", error);
@@ -59,9 +74,16 @@ export const useRequestTypeStore = create<RequestTypeState>((set) => ({
 
     updateRequestType: async (index, requestType) => {
         try {
+            const userEmail = localStorage.getItem("userEmail");
+            if (!userEmail)
+                throw new Error("User email not found in local storage");
+
             await axios.put(
-                `http://localhost:8000/request-types/${index}`,
-                requestType
+                `${backendUrl}/request-types/${index}`,
+                requestType,
+                {
+                    headers: { "x-user-email": userEmail },
+                }
             );
             set((state) => {
                 const updatedRequestTypes = [...state.requestTypes];
@@ -75,7 +97,13 @@ export const useRequestTypeStore = create<RequestTypeState>((set) => ({
 
     deleteRequestType: async (index) => {
         try {
-            await axios.delete(`http://localhost:8000/request-types/${index}`);
+            const userEmail = localStorage.getItem("userEmail");
+            if (!userEmail)
+                throw new Error("User email not found in local storage");
+
+            await axios.delete(`${backendUrl}/request-types/${index}`, {
+                headers: { "x-user-email": userEmail },
+            });
             set((state) => ({
                 requestTypes: state.requestTypes.filter((_, i) => i !== index),
             }));

@@ -5,7 +5,7 @@ import { LoadingSpinner } from "@/components/LoadingSpinner";
 import RequestTypeList from "@/components/RequestTypeList";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { useRequestTypeStore } from "@/store/store";
+import { RequestType, useRequestTypeStore } from "@/store/store";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -31,30 +31,23 @@ export default function Dashboard() {
     }, [router]);
 
     useEffect(() => {
+        console.log("Fetching request types");
         fetchRequestTypes();
     }, [fetchRequestTypes]);
 
-    const handleAddOrUpdateRequestType = async (data: any) => {
+    const handleAddOrUpdateRequestType = async (requestType: RequestType) => {
         setLoading(true);
-        const requestType = {
-            ...data,
-            time_of_creation:
-                selectedIndex === null
-                    ? new Date().toISOString()
-                    : requestTypes[selectedIndex].time_of_creation,
-            time_of_update:
-                selectedIndex !== null ? new Date().toISOString() : undefined,
-        };
 
         try {
             if (selectedIndex === null) {
                 await addRequestType(requestType);
+                await fetchRequestTypes(); // Fetch after adding a new request type
             } else {
                 await updateRequestType(selectedIndex, requestType);
+                await fetchRequestTypes(); // Fetch after updating a request type
             }
         } finally {
             setLoading(false);
-            await fetchRequestTypes();
             setIsDialogOpen(false);
             setSelectedIndex(null);
         }
@@ -66,6 +59,7 @@ export default function Dashboard() {
     };
 
     const resetForm = () => {
+        console.log("Closing dialog, form reset");
         setSelectedIndex(null);
         setIsDialogOpen(false);
     };
@@ -90,7 +84,13 @@ export default function Dashboard() {
                 onDelete={deleteRequestType}
             />
 
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <Dialog
+                open={isDialogOpen}
+                onOpenChange={(isOpen) => {
+                    console.log("Dialog open state changed:", isOpen);
+                    setIsDialogOpen(isOpen);
+                }}
+            >
                 <DialogTrigger asChild>
                     <Button variant="default" className="mt-6">
                         Create New Request Type

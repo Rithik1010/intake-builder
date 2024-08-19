@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { InformationField } from "@/store/store";
+import { InformationField, RequestType } from "@/store/store";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 
 interface DialogFormProps {
-    onSubmit: (data: any) => void;
+    onSubmit: (requestType: RequestType) => void;
     onClose: () => void;
     initialData?: any;
 }
@@ -15,18 +15,16 @@ export default function DialogForm({
     onClose,
     initialData,
 }: DialogFormProps) {
-    const [requestType, setRequestType] = useState(
-        initialData?.request_type || ""
-    );
+    const [typeName, setTypeName] = useState(initialData?.type_name || "");
     const [purpose, setPurpose] = useState(initialData?.purpose || "");
-    const [owner, setOwner] = useState(initialData?.request_type_owner || "");
     const [fields, setFields] = useState<InformationField[]>(
         initialData?.information_to_collect || [
             { name: "", field_type: "text", required: true, example: "" },
         ]
     );
 
-    const handleAddField = () => {
+    const handleAddField = (event: React.MouseEvent) => {
+        event.preventDefault(); // Prevent default button behavior
         setFields([
             ...fields,
             { name: "", field_type: "text", required: true, example: "" },
@@ -42,23 +40,23 @@ export default function DialogForm({
         setFields(newFields);
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = (event: React.MouseEvent) => {
+        event.preventDefault(); // Prevent default form submission behavior
         onSubmit({
-            request_type: requestType,
+            type_name: typeName,
             purpose,
             information_to_collect: fields,
-            request_type_owner: owner,
         });
         onClose();
     };
 
     return (
         <form className="space-y-4 mt-4">
-            <Label htmlFor="requestType">Request Type</Label>
+            <Label htmlFor="typeName">Request Type</Label>
             <Input
-                id="requestType"
-                value={requestType}
-                onChange={(e) => setRequestType(e.target.value)}
+                id="typeName"
+                value={typeName}
+                onChange={(e) => setTypeName(e.target.value)}
                 placeholder="E.g., NDA Request - Sales"
             />
 
@@ -70,13 +68,6 @@ export default function DialogForm({
                 placeholder="Define when this form should be filled..."
             />
 
-            <Label htmlFor="owner">Request Type Owner (Email)</Label>
-            <Input
-                id="owner"
-                value={owner}
-                onChange={(e) => setOwner(e.target.value)}
-                placeholder="owner@example.com"
-            />
             <div className="space-y-2">
                 <h3 className="font-semibold">Information to Collect</h3>
                 {fields.map((field, index) => (

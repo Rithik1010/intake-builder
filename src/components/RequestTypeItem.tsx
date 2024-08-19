@@ -1,3 +1,4 @@
+import { RequestType } from "@/store/store";
 import { Button } from "./ui/button";
 import {
     Card,
@@ -9,7 +10,7 @@ import {
 } from "./ui/card";
 
 interface RequestTypeItemProps {
-    requestType: any;
+    requestType: RequestType;
     onEdit: () => void;
     onDelete: () => void;
 }
@@ -24,7 +25,7 @@ export default function RequestTypeItem({
             <div>
                 <CardHeader>
                     <CardTitle className="text-xl font-semibold">
-                        {requestType.request_type}
+                        {requestType.type_name}
                     </CardTitle>
                     <CardDescription>{requestType.purpose}</CardDescription>
                 </CardHeader>
