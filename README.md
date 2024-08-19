@@ -32,7 +32,7 @@ This project is a frontend web application built with Next.js and Tailwind CSS, 
 3. Set up the environment variables:
 
     ```bash
-    export NEXT_PUBLIC_BACKEND_URL="http://localhost:8000"
+    NEXT_PUBLIC_BACKEND_URL="http://localhost:8000"
     ```
 
 4. Run the application:
