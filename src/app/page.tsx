@@ -44,30 +44,39 @@ export default function Home() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-white text-gray-900">
-            <h1 className="text-4xl font-bold mb-6">Welcome to the App</h1>
-            <div>
-                <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    onKeyDown={handleKeyDown} // Handle "Enter" key press
-                    placeholder="Enter your email"
-                    className={`p-3 border rounded-md mb-4 text-lg w-80 bg-white text-gray-900 ${
-                        error ? "border-red-500" : "border-gray-400"
-                    }`}
-                    aria-label="Email Address"
-                    aria-invalid={!!error}
-                />
-                {error && <p className="text-red-500 mb-4">{error}</p>}
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-gray-100 relative">
+            <div className="absolute inset-3 grid grid-cols-12 grid-rows-12 gap-3">
+                {Array.from({ length: 144 }).map((_, i) => (
+                    <div key={i} className="border border-gray-700"></div>
+                ))}
             </div>
-            <Button
-                onClick={handleLogin}
-                variant="default"
-                className="text-lg bg-black text-gray-100 hover:bg-gray-700"
-            >
-                Login
-            </Button>
+            <div className="relative z-10 flex flex-col items-center">
+                <h1 className="text-4xl font-bold mb-6 text-gray-200">
+                    Welcome to Intake Builder
+                </h1>
+                <div>
+                    <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        onKeyDown={handleKeyDown} // Handle "Enter" key press
+                        placeholder="Enter your email"
+                        className={`p-3 border rounded-md mb-4 text-lg w-80 bg-white text-black ${
+                            error ? "border-red-500" : "border-black"
+                        }`}
+                        aria-label="Email Address"
+                        aria-invalid={!!error}
+                    />
+                    {error && <p className="text-red-500 mb-4">{error}</p>}
+                </div>
+                <Button
+                    onClick={handleLogin}
+                    variant="default"
+                    className="text-lg bg-black text-gray-100 hover:bg-gray-700"
+                >
+                    Login
+                </Button>
+            </div>
         </div>
     );
 }
