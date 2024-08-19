@@ -138,10 +138,13 @@ export default function Dashboard() {
                 >
                     <DialogTrigger asChild>
                         <FloatingActionButton
-                            onClick={() => setIsDialogOpen(true)}
+                            onClick={() => {
+                                resetForm();
+                                setIsDialogOpen(true);
+                            }}
                         />
                     </DialogTrigger>
-                    <DialogContent className="dark:bg-gray-800 dark:text-gray-100">
+                    <DialogContent className="dark:bg-gray-800 dark:text-gray-100 overflow-y-scroll max-h-screen">
                         <DialogForm
                             initialData={
                                 selectedIndex !== null
