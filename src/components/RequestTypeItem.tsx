@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { RequestType } from "@/store/store";
 import { Button } from "./ui/button";
 import {
@@ -7,6 +10,7 @@ import {
     CardDescription,
     CardFooter,
 } from "./ui/card";
+import WarningDialog from "@/components/WarningDialog";
 
 interface RequestTypeItemProps {
     requestType: RequestType;
@@ -19,6 +23,17 @@ export default function RequestTypeItem({
     onEdit,
     onDelete,
 }: RequestTypeItemProps) {
+    const [isWarningOpen, setIsWarningOpen] = useState(false);
+
+    const handleDelete = () => {
+        setIsWarningOpen(true);
+    };
+
+    const handleConfirmDelete = () => {
+        onDelete();
+        setIsWarningOpen(false);
+    };
+
     return (
         <Card className="shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
             <div>
@@ -39,12 +54,19 @@ export default function RequestTypeItem({
                 </Button>
                 <Button
                     variant="destructive"
-                    onClick={onDelete}
+                    onClick={handleDelete}
                     className="dark:border-gray-500 dark:text-gray-200"
                 >
                     Delete
                 </Button>
             </CardFooter>
+
+            <WarningDialog
+                isOpen={isWarningOpen}
+                onClose={() => setIsWarningOpen(false)}
+                onConfirm={handleConfirmDelete}
+                requestTypeName={requestType.type_name}
+            />
         </Card>
     );
 }
