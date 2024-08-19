@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { InformationField, RequestType } from "@/store/store";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
+import { Textarea } from "./ui/textarea";
 
 interface DialogFormProps {
     onSubmit: (requestType: RequestType) => void;
@@ -18,6 +19,8 @@ export default function DialogForm({
 }: DialogFormProps) {
     const [typeName, setTypeName] = useState(initialData?.type_name || "");
     const [purpose, setPurpose] = useState(initialData?.purpose || "");
+    const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+
     const [fields, setFields] = useState<InformationField[]>(
         initialData?.information_to_collect || [
             { name: "", field_type: "text", required: true, example: "" },
@@ -42,6 +45,14 @@ export default function DialogForm({
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
+
+    useEffect(() => {
+        // Adjust the textarea height to match its content
+        if (textareaRef.current) {
+            textareaRef.current.style.height = "auto";
+            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+        }
+    }, [purpose]); // Dependency array to run this effect when `purpose` changes
 
     const handleAddField = (event: React.MouseEvent) => {
         event.preventDefault();
@@ -150,7 +161,7 @@ export default function DialogForm({
             <Label htmlFor="purpose" className="dark:text-gray-100">
                 Purpose
             </Label>
-            <Input
+            <Textarea
                 id="purpose"
                 value={purpose}
                 onChange={(e) => {
@@ -168,7 +179,15 @@ export default function DialogForm({
                     }
                 }}
                 placeholder="Define when this form should be filled..."
-                className="dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500"
+                className="dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500 resize-none overflow-hidden"
+                ref={textareaRef}
+                style={{ height: "auto", minHeight: "40px" }}
+                rows={1}
+                onInput={(e) => {
+                    const target = e.target as HTMLTextAreaElement;
+                    target.style.height = "auto";
+                    target.style.height = `${target.scrollHeight}px`;
+                }}
             />
             {errors.purpose && (
                 <p className="text-red-500 text-sm">{errors.purpose}</p>
