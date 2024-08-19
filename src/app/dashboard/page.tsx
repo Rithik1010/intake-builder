@@ -3,9 +3,9 @@
 import Navbar from "@/components/Navbar";
 import FloatingActionButton from "@/components/FloatingActionButton";
 import DialogForm from "@/components/DialogForm";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
 import RequestTypeList from "@/components/RequestTypeList";
-import { Button } from "@/components/ui/button";
+import EmptyState from "@/components/EmptyState";
+import Skeleton from "@/components/Skeleton";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { RequestType, useRequestTypeStore } from "@/store/store";
 import { useState, useEffect } from "react";
@@ -24,6 +24,7 @@ export default function Dashboard() {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [loadingData, setLoadingData] = useState(true);
     const { toast } = useToast();
 
     useEffect(() => {
@@ -34,7 +35,11 @@ export default function Dashboard() {
     }, [router]);
 
     useEffect(() => {
-        fetchRequestTypes();
+        const loadData = async () => {
+            await fetchRequestTypes();
+            setLoadingData(false);
+        };
+        loadData();
     }, [fetchRequestTypes]);
 
     const handleAddOrUpdateRequestType = async (requestType: RequestType) => {
@@ -87,19 +92,42 @@ export default function Dashboard() {
         <div>
             <Navbar />
             <div className="container mx-auto mt-10 p-6 bg-gray-100 rounded-md">
-                <RequestTypeList
-                    requestTypes={requestTypes}
-                    onEdit={handleEdit}
-                    onDelete={(index) => {
-                        deleteRequestType(index);
-                        toast({
-                            title: "Success",
-                            description: "Request type deleted successfully!",
-                            className: "bg-green-100 text-green-700",
-                            duration: 1500,
-                        });
-                    }}
-                />
+                {loadingData ? (
+                    <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                        {/* Show skeletons while loading */}
+                        {[...Array(6)].map((_, index) => (
+                            <div
+                                key={index}
+                                className="p-6 bg-white rounded-lg shadow-md"
+                            >
+                                <Skeleton height="24px" className="mb-2" />
+                                <Skeleton
+                                    height="16px"
+                                    width="80%"
+                                    className="mb-4"
+                                />
+                                <Skeleton height="32px" width="60%" />
+                            </div>
+                        ))}
+                    </div>
+                ) : requestTypes.length === 0 ? (
+                    <EmptyState onCreate={() => setIsDialogOpen(true)} />
+                ) : (
+                    <RequestTypeList
+                        requestTypes={requestTypes}
+                        onEdit={handleEdit}
+                        onDelete={(index) => {
+                            deleteRequestType(index);
+                            toast({
+                                title: "Success",
+                                description:
+                                    "Request type deleted successfully!",
+                                className: "bg-green-100 text-green-700",
+                                duration: 1500,
+                            });
+                        }}
+                    />
+                )}
 
                 <Dialog
                     open={isDialogOpen}
@@ -120,14 +148,6 @@ export default function Dashboard() {
                             onSubmit={handleAddOrUpdateRequestType}
                             onClose={resetForm}
                         />
-                        {loading && (
-                            <div className="flex justify-center mt-4">
-                                <LoadingSpinner
-                                    size={24}
-                                    className="text-blue-500"
-                                />
-                            </div>
-                        )}
                     </DialogContent>
                 </Dialog>
             </div>
