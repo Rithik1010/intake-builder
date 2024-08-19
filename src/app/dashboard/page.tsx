@@ -1,5 +1,6 @@
 "use client";
 
+import Navbar from "@/components/Navbar"; // Import the Navbar component
 import DialogForm from "@/components/DialogForm";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import RequestTypeList from "@/components/RequestTypeList";
@@ -64,58 +65,49 @@ export default function Dashboard() {
         setIsDialogOpen(false);
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem("userEmail"); // Remove the user email from local storage
-        router.push("/"); // Redirect to landing page
-    };
-
     return (
-        <div className="container mx-auto mt-10 p-6 bg-gray-100 rounded-md">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold">Request Type Dashboard</h1>
-                <Button variant="outline" onClick={handleLogout}>
-                    Sign Out
-                </Button>
+        <div>
+            <Navbar />
+            <div className="container mx-auto mt-10 p-6 bg-gray-100 rounded-md">
+                <RequestTypeList
+                    requestTypes={requestTypes}
+                    onEdit={handleEdit}
+                    onDelete={deleteRequestType}
+                />
+
+                <Dialog
+                    open={isDialogOpen}
+                    onOpenChange={(isOpen) => {
+                        console.log("Dialog open state changed:", isOpen);
+                        setIsDialogOpen(isOpen);
+                    }}
+                >
+                    <DialogTrigger asChild>
+                        <Button variant="default" className="mt-6">
+                            Create New Request Type
+                        </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogForm
+                            initialData={
+                                selectedIndex !== null
+                                    ? requestTypes[selectedIndex]
+                                    : undefined
+                            }
+                            onSubmit={handleAddOrUpdateRequestType}
+                            onClose={resetForm}
+                        />
+                        {loading && (
+                            <div className="flex justify-center mt-4">
+                                <LoadingSpinner
+                                    size={24}
+                                    className="text-blue-500"
+                                />
+                            </div>
+                        )}
+                    </DialogContent>
+                </Dialog>
             </div>
-
-            <RequestTypeList
-                requestTypes={requestTypes}
-                onEdit={handleEdit}
-                onDelete={deleteRequestType}
-            />
-
-            <Dialog
-                open={isDialogOpen}
-                onOpenChange={(isOpen) => {
-                    console.log("Dialog open state changed:", isOpen);
-                    setIsDialogOpen(isOpen);
-                }}
-            >
-                <DialogTrigger asChild>
-                    <Button variant="default" className="mt-6">
-                        Create New Request Type
-                    </Button>
-                </DialogTrigger>
-                <DialogContent>
-                    <DialogForm
-                        initialData={
-                            selectedIndex !== null
-                                ? requestTypes[selectedIndex]
-                                : undefined
-                        }
-                        onSubmit={handleAddOrUpdateRequestType}
-                        onClose={resetForm}
-                    />
-                    {loading && (
-                        <div className="flex justify-center mt-4">
-                            <LoadingSpinner
-                                size={24}
-                                className="text-blue-500"
-                            />
-                        </div>
-                    )}
-                </DialogContent>
-            </Dialog>
         </div>
     );
 }
