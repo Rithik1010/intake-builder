@@ -34,7 +34,7 @@
 
 ## 5. Implementation of Dark Mode
 
-**Decision**: I added a dark mode to the UI, allowing users to switch between light and dark themes.
+**Decision**: I added a dark mode (also default) to the UI, allowing users to switch between light and dark themes.
 
 **Justification**: Dark mode has become a popular feature in modern applications as it reduces eye strain in low-light environments and can improve battery life on OLED screens. Moreover, I was not entirely satisfied with the initial color choices in light mode, so dark mode provided an additional customization option for users who prefer a different visual aesthetic.
 
