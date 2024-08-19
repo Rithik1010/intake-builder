@@ -1,5 +1,6 @@
 import { RequestType } from "@/store/store";
 import { Button } from "@/components/ui/button";
+import { Pencil, Trash } from "lucide-react";
 
 interface RequestTypeListProps {
     requestTypes: RequestType[];
@@ -26,14 +27,21 @@ export default function RequestTypeList({
                         {requestType.purpose}
                     </p>
                     <div className="flex justify-end mt-auto space-x-2">
-                        <Button variant="outline" onClick={() => onEdit(index)}>
-                            Edit
+                        <Button
+                            variant="outline"
+                            onClick={() => onEdit(index)}
+                            className="flex justify-between items-center"
+                        >
+                            <Pencil className="w-4 h-4" />
+                            <span className="ml-2">Edit</span>
                         </Button>
                         <Button
                             variant="destructive"
                             onClick={() => onDelete(index)}
+                            className="flex justify-between items-center"
                         >
-                            Delete
+                            <Trash className="w-4 h-4" />
+                            <span className="ml-2">Delete</span>
                         </Button>
                     </div>
                 </div>
