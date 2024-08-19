@@ -1,7 +1,13 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import { ThemeProvider } from "next-themes";
+import dynamic from "next/dynamic";
+const ThemeProviderNoSSR = dynamic(
+    () => import("next-themes").then((mod) => mod.ThemeProvider),
+    {
+        ssr: false,
+    }
+);
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,10 +19,10 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>
-                <ThemeProvider attribute="class" defaultTheme="system">
+                <ThemeProviderNoSSR attribute="class" defaultTheme="system">
                     {children}
                     <Toaster />
-                </ThemeProvider>
+                </ThemeProviderNoSSR>
             </body>
         </html>
     );

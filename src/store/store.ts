@@ -28,7 +28,6 @@ interface RequestTypeState {
 }
 
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-console.log("Backend URL:", backendUrl);
 
 export const useRequestTypeStore = create<RequestTypeState>((set) => ({
     requestTypes: [],
