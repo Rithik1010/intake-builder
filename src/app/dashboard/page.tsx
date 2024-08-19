@@ -144,7 +144,7 @@ export default function Dashboard() {
                             }}
                         />
                     </DialogTrigger>
-                    <DialogContent className="dark:bg-gray-800 dark:text-gray-100 overflow-y-scroll max-h-screen">
+                    <DialogContent className="dark:bg-gray-800 dark:text-gray-100 overflow-y-auto max-h-[80vh] p-6">
                         <DialogForm
                             initialData={
                                 selectedIndex !== null

@@ -119,7 +119,7 @@ export default function DialogForm({
     };
 
     return (
-        <form className="space-y-4 mt-4 max-h-[80vh] p-4">
+        <form className="space-y-4 p-4">
             <Label htmlFor="typeName" className="dark:text-gray-100">
                 Request Type
             </Label>

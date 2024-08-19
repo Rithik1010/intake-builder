@@ -33,7 +33,7 @@ export default function WarningDialog({
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="space-y-4">
+            <DialogContent className="space-y-4 dark:bg-gray-800 dark:text-gray-100">
                 <h3 className="font-semibold dark:text-gray-100">
                     Are you sure you want to delete the request type{" "}
                     <span className="text-red-600">{requestTypeName}</span>?
