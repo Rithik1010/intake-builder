@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { RequestType, useRequestTypeStore } from "@/store/store";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function Dashboard() {
     const router = useRouter();
@@ -23,6 +24,7 @@ export default function Dashboard() {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const { toast } = useToast();
 
     useEffect(() => {
         const userEmail = localStorage.getItem("userEmail");
@@ -41,11 +43,29 @@ export default function Dashboard() {
         try {
             if (selectedIndex === null) {
                 await addRequestType(requestType);
-                await fetchRequestTypes();
+                toast({
+                    title: "Success",
+                    description: "Request type added successfully!",
+                    className: "bg-green-100 text-green-700",
+                    duration: 1500,
+                });
             } else {
                 await updateRequestType(selectedIndex, requestType);
-                await fetchRequestTypes();
+                toast({
+                    title: "Success",
+                    description: "Request type updated successfully!",
+                    className: "bg-green-100 text-green-700",
+                    duration: 1500,
+                });
             }
+            await fetchRequestTypes();
+        } catch (error) {
+            toast({
+                title: "Error",
+                description: "An error occurred. Please try again.",
+                variant: "destructive",
+                duration: 1500,
+            });
         } finally {
             setLoading(false);
             setIsDialogOpen(false);
@@ -70,7 +90,15 @@ export default function Dashboard() {
                 <RequestTypeList
                     requestTypes={requestTypes}
                     onEdit={handleEdit}
-                    onDelete={deleteRequestType}
+                    onDelete={(index) => {
+                        deleteRequestType(index);
+                        toast({
+                            title: "Success",
+                            description: "Request type deleted successfully!",
+                            className: "bg-green-100 text-green-700",
+                            duration: 1500,
+                        });
+                    }}
                 />
 
                 <Dialog
