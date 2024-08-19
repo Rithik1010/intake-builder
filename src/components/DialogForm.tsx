@@ -24,6 +24,25 @@ export default function DialogForm({
         ]
     );
 
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+    const validateFields = () => {
+        const newErrors: { [key: string]: string } = {};
+        if (!typeName.trim()) {
+            newErrors.typeName = "Request Type is required.";
+        }
+        if (!purpose.trim()) {
+            newErrors.purpose = "Purpose is required.";
+        }
+        fields.forEach((field, index) => {
+            if (!field.name.trim()) {
+                newErrors[`field-name-${index}`] = "Field Name is required.";
+            }
+        });
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
     const handleAddField = (event: React.MouseEvent) => {
         event.preventDefault();
         setFields([
@@ -39,22 +58,64 @@ export default function DialogForm({
         const newFields = [...fields];
         newFields[index] = { ...newFields[index], ...field };
         setFields(newFields);
+
+        // Clear the error for this field if it becomes valid
+        if (field.name !== undefined) {
+            const errorKey = `field-name-${index}`;
+            if (field.name.trim()) {
+                setErrors((prevErrors) => {
+                    const { [errorKey]: removed, ...remainingErrors } =
+                        prevErrors;
+                    return remainingErrors;
+                });
+            } else {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    [errorKey]: "Field Name is required.",
+                }));
+            }
+        }
+
+        if (field.example !== undefined) {
+            const errorKey = `example-${index}`;
+            if (field.example.trim()) {
+                setErrors((prevErrors) => {
+                    const { [errorKey]: removed, ...remainingErrors } =
+                        prevErrors;
+                    return remainingErrors;
+                });
+            } else {
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    [errorKey]: "Example is required.",
+                }));
+            }
+        }
     };
 
     const handleRemoveField = (event: React.MouseEvent, index: number) => {
         event.preventDefault();
         const newFields = fields.filter((_, i) => i !== index);
         setFields(newFields);
+
+        // Remove errors related to this field
+        setErrors((prevErrors) => {
+            const { [`field-name-${index}`]: removedName, ...remainingErrors } =
+                prevErrors;
+            return remainingErrors;
+        });
     };
 
     const handleSubmit = (event: React.MouseEvent) => {
         event.preventDefault();
-        onSubmit({
-            type_name: typeName,
-            purpose,
-            information_to_collect: fields,
-        });
-        onClose();
+        if (validateFields()) {
+            onSubmit({
+                type_name: typeName,
+                purpose,
+                information_to_collect: fields,
+            });
+            onClose();
+        }
     };
 
     return (
@@ -65,10 +126,26 @@ export default function DialogForm({
             <Input
                 id="typeName"
                 value={typeName}
-                onChange={(e) => setTypeName(e.target.value)}
+                onChange={(e) => {
+                    setTypeName(e.target.value);
+                    if (e.target.value.trim()) {
+                        setErrors((prevErrors) => {
+                            const { typeName, ...remainingErrors } = prevErrors;
+                            return remainingErrors;
+                        });
+                    } else {
+                        setErrors((prevErrors) => ({
+                            ...prevErrors,
+                            typeName: "Request Type is required.",
+                        }));
+                    }
+                }}
                 placeholder="E.g., NDA Request - Sales"
                 className="dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500"
             />
+            {errors.typeName && (
+                <p className="text-red-500 text-sm">{errors.typeName}</p>
+            )}
             <Separator className="my-4" />
             <Label htmlFor="purpose" className="dark:text-gray-100">
                 Purpose
@@ -76,10 +153,26 @@ export default function DialogForm({
             <Input
                 id="purpose"
                 value={purpose}
-                onChange={(e) => setPurpose(e.target.value)}
+                onChange={(e) => {
+                    setPurpose(e.target.value);
+                    if (e.target.value.trim()) {
+                        setErrors((prevErrors) => {
+                            const { purpose, ...remainingErrors } = prevErrors;
+                            return remainingErrors;
+                        });
+                    } else {
+                        setErrors((prevErrors) => ({
+                            ...prevErrors,
+                            purpose: "Purpose is required.",
+                        }));
+                    }
+                }}
                 placeholder="Define when this form should be filled..."
                 className="dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500"
             />
+            {errors.purpose && (
+                <p className="text-red-500 text-sm">{errors.purpose}</p>
+            )}
             <Separator className="my-4" />
             <div className="space-y-4">
                 <h3 className="font-semibold dark:text-gray-100 text-lg">
@@ -108,6 +201,11 @@ export default function DialogForm({
                                 placeholder="Field Name"
                                 className="dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500"
                             />
+                            {errors[`field-name-${index}`] && (
+                                <p className="text-red-500 text-sm">
+                                    {errors[`field-name-${index}`]}
+                                </p>
+                            )}
                         </div>
                         <div>
                             <Label
@@ -175,7 +273,6 @@ export default function DialogForm({
                                 onClick={(event) =>
                                     handleRemoveField(event, index)
                                 }
-                                className="ml-4"
                             >
                                 Remove
                             </Button>
