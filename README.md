@@ -1,6 +1,6 @@
 # Frontend Project - Request Type Management UI
 
-This project is a frontend web application built with Next.js and Tailwind CSS, providing a user interface for managing request types. It interacts with a FastAPI backend to perform CRUD operations on request types.
+This project is a frontend web application built with Next.js and Tailwind CSS, providing a user interface for managing request types. It interacts with a [FastAPI backend](https://github.com/Rithik1010/intake-backend) to perform CRUD operations on request types.
 
 ## Important Notes
 
